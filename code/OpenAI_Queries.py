@@ -6,6 +6,7 @@ import os
 import traceback
 from utilities.helper import LLMHelper
 import regex as re
+import tiktoken
 
 import logging
 logger = logging.getLogger('azure.core.pipeline.policies.http_logging_policy').setLevel(logging.WARNING)
@@ -28,7 +29,8 @@ def check_deployment():
     #\ 2. Check if the embedding is working
     try:
         llm_helper = LLMHelper()
-        llm_helper.embeddings.embed_documents(texts=["This is a test"])
+	encoding = tiktoken.get_encoding("cl100k_base")
+        llm_helper.embeddings.embed_documents(texts=["This is a test"], encoding=encoding)
         st.success("Embedding is working!")
     except Exception as e:
         st.error(f"""Embedding model is not working.  
